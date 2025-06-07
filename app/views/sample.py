@@ -6,4 +6,4 @@ sample = Blueprint("sample", __name__)
 @sample.route("/")
 def index():
     print("sample.index")
-    return render_template('home/index.html')
+    return render_template('index.html')
