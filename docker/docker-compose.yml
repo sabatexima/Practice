@@ -1,0 +1,28 @@
+version: '3'
+services:
+  vc_web_app: 
+    build: .
+    ports:
+      - 5007:5007
+    image: practice
+    container_name: practice
+    working_dir: /src
+    tty: true
+    volumes:
+      - ../src:/src
+  
+  db:
+    volumes:
+      - ./docker-mysql/DB:/docker-entrypoint-initdb.d
+      - ./docker-mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    ports:
+      - 5010:5010
+    image: mysql:8.0.36-debian
+    container_name: horse_racing_ai_db
+    tty: true
+    environment:
+      - MYSQL_DATABASE=app_db
+      - MYSQL_USER=username
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=root_password
+    command: mysqld
