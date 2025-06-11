@@ -16,6 +16,3 @@ def send():
     message = data.get("message")
     print(f"[受信] {name}：{message}")
     return jsonify(reply=f"{name}さん、メッセージを受け取りました！内容：{message}")
-
-if __name__ == "__main__":
-    app.run(debug=True)
