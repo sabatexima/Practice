@@ -1,5 +1,4 @@
-from flask import Blueprint
-from flask import render_template
+from flask import Blueprint,render_template,Flask, request, jsonify
 
 sample = Blueprint("sample", __name__)
 
@@ -7,7 +6,6 @@ sample = Blueprint("sample", __name__)
 def index():
     print("sample.index")
     return render_template('index.html')
-from flask import Flask, request, jsonify
 
 @sample.route("/send", methods=["POST"])
 def send():
@@ -15,4 +13,4 @@ def send():
     name = data.get("name")
     message = data.get("message")
     print(f"[受信] {name}：{message}")
-    return jsonify(reply=f"{name}さん、メッセージを受け取りました！内容：{message}")
+    return render_template('in.html')
