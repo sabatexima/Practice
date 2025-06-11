@@ -39,7 +39,6 @@
       },
       methods: {
         async sendMessage() {
-          try {
             const res = await fetch('/send', {
               method: 'POST',
               headers: {
@@ -51,10 +50,7 @@
               })
             })
             const data = await res.json()
-            this.responseMessage = data.reply
-          } catch (e) {
-            this.responseMessage = '送信に失敗しました'
-          }
+            this.responseMessage = data.reply#
         }
       }
     }
