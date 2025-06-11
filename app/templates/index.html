@@ -1,4 +1,4 @@
-<html>
+<!-- <html>
 <head>
   <meta charset="utf-8" />
   <script src="https://unpkg.com/vue@3.0.0"></script>
@@ -7,8 +7,8 @@
   <div id="app1">
     <p>{{ '{{ count }}' }}回クリックした</p>
     <button v-on:click="increment">+</button> <!--v-on:clickでクリックイベントを登録 -->
-    <button v-on:click="decrement">-</button> <!--v-on:clickでクリックイベントを登録 -->
-  </div>
+    <!-- <button v-on:click="decrement">-</button> <!--v-on:clickでクリックイベントを登録 -->
+  <!-- </div>
   <script>
     const App1 = { //Vueコンポーネントを定義
       data() { //dataメソッドを定義 Vue.jsにこのデータを返すという宣言
@@ -27,6 +27,48 @@
     }
     app1 = Vue.createApp(App1) //Vueアプリケーションを作成
     app1.mount('#app1') //VueアプリケーションをHTML要素にマウント
+  </script>
+</body>
+</html> --> --> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Vue Router SPA</title>
+  <script src="https://unpkg.com/vue@3"></script>
+  <script src="https://unpkg.com/vue-router@4"></script>
+</head>
+<body>
+  <div id="app">
+    <nav>
+      <router-link to="/">ホーム</router-link> |
+      <router-link to="/about">このサイトについて</router-link>
+    </nav>
+    <router-view></router-view> <!-- ページ内容を表示する -->
+  </div>
+
+  <script>
+    // コンポーネント定義
+    const Home = { template: '<h2>ホームページです</h2>' }
+    const About = { template: '<h2>このサイトについてのページです</h2>' }
+
+    // ルート設定
+    const routes = [
+      { path: '/', component: Home },
+      { path: '/about', component: About }
+    ]
+
+    // Vue Router を作成
+    const router = VueRouter.createRouter({
+      history: VueRouter.createWebHashHistory(), // # を使った履歴管理（設定不要で簡単）
+      routes
+    })
+
+    // アプリに Router を組み込む
+    const app = Vue.createApp({})
+    app.use(router)
+    app.mount('#app')
   </script>
 </body>
 </html>
