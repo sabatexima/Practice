@@ -1,41 +1,8 @@
-<!-- <html>
-<head>
-  <meta charset="utf-8" />
-  <script src="https://unpkg.com/vue@3.0.0"></script>
-</head>
-<body>
-  <div id="app1">
-    <p>{{ '{{ count }}' }}回クリックした</p>
-    <button v-on:click="increment">+</button> <!--v-on:clickでクリックイベントを登録 -->
-    <!-- <button v-on:click="decrement">-</button> <!--v-on:clickでクリックイベントを登録 -->
-  <!-- </div>
-  <script>
-    const App1 = { //Vueコンポーネントを定義
-      data() { //dataメソッドを定義 Vue.jsにこのデータを返すという宣言
-        return {
-          count: 0
-        }
-      },
-      methods: { //methodsメソッドを定義
-        increment() { //incrementメソッドを定義
-          this.count+=1 //countをインクリメント
-        },
-        decrement(){
-          this.count-=1 //countをデクリメント
-        }
-      }
-    }
-    app1 = Vue.createApp(App1) //Vueアプリケーションを作成
-    app1.mount('#app1') //VueアプリケーションをHTML要素にマウント
-  </script>
-</body>
-</html> --> --> -->
-
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Vue Router SPA</title>
+  <title>Vue メッセージ送信</title>
   <script src="https://unpkg.com/vue@3"></script>
   <script src="https://unpkg.com/vue-router@4"></script>
 </head>
@@ -43,29 +10,65 @@
   <div id="app">
     <nav>
       <router-link to="/">ホーム</router-link> |
-      <router-link to="/about">このサイトについて</router-link>
+      <router-link to="/contact">メッセージ送信</router-link>
     </nav>
-    <router-view></router-view> <!-- ページ内容を表示する -->
+    <router-view></router-view>
   </div>
 
   <script>
-    // コンポーネント定義
     const Home = { template: '<h2>ホームページです</h2>' }
-    const About = { template: '<h2>このサイトについてのページです</h2>' }
 
-    // ルート設定
+    const Contact = {
+      template: `
+        <div>
+          <h2>メッセージ送信フォーム</h2>
+          <form @submit.prevent="sendMessage">
+            <label>名前:</label><input v-model="name" /><br>
+            <label>メッセージ:</label><textarea v-model="message"></textarea><br>
+            <button type="submit">送信</button>
+          </form>
+          <p v-if="responseMessage">{{ responseMessage }}</p>
+        </div>
+      `,
+      data() {
+        return {
+          name: '',
+          message: '',
+          responseMessage: ''
+        }
+      },
+      methods: {
+        async sendMessage() {
+          try {
+            const res = await fetch('/send', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                name: this.name,
+                message: this.message
+              })
+            })
+            const data = await res.json()
+            this.responseMessage = data.reply
+          } catch (e) {
+            this.responseMessage = '送信に失敗しました'
+          }
+        }
+      }
+    }
+
     const routes = [
       { path: '/', component: Home },
-      { path: '/about', component: About }
+      { path: '/contact', component: Contact }
     ]
 
-    // Vue Router を作成
     const router = VueRouter.createRouter({
-      history: VueRouter.createWebHashHistory(), // # を使った履歴管理（設定不要で簡単）
+      history: VueRouter.createWebHashHistory(),
       routes
     })
 
-    // アプリに Router を組み込む
     const app = Vue.createApp({})
     app.use(router)
     app.mount('#app')
